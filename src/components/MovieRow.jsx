@@ -5,6 +5,9 @@ function MovieRow({ title, fetchUrl, large }) {
   const [movies, setMovies] = useState([]);
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [favorites, setFavorites] = useState(
+    JSON.parse(localStorage.getItem("favorites")) || []
+  );
 
   useEffect(() => {
     const getMovies = async () => {
@@ -22,19 +25,28 @@ function MovieRow({ title, fetchUrl, large }) {
     getMovies();
   }, [fetchUrl]);
 
+  const toggleFavorite = (movie, e) => {
+    e.stopPropagation();
+
+    const exists = favorites.find((fav) => fav.id === movie.id);
+
+    const updatedFavorites = exists
+      ? favorites.filter((fav) => fav.id !== movie.id)
+      : [...favorites, movie];
+
+    setFavorites(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+  };
+
   const handleTrailer = async (movie) => {
     try {
       const mediaType =
-        movie.media_type ||
-        (movie.first_air_date ? "tv" : "movie");
+        movie.media_type || (movie.first_air_date ? "tv" : "movie");
 
       const video = await fetchTrailer(movie.id, mediaType);
 
-      if (video) {
-        setTrailer(video.key);
-      } else {
-        alert("Trailer not available");
-      }
+      if (video) setTrailer(video.key);
+      else alert("Trailer not available");
     } catch (error) {
       console.error("Error fetching trailer:", error);
       alert("Trailer not available");
@@ -49,28 +61,39 @@ function MovieRow({ title, fetchUrl, large }) {
         {loading
           ? Array(8)
               .fill(0)
-              .map((_, index) => (
-                <div className="skeleton" key={index}></div>
-              ))
+              .map((_, index) => <div className="skeleton" key={index}></div>)
           : movies.map(
               (movie) =>
                 ((large && movie.poster_path) ||
                   (!large && movie.backdrop_path)) && (
-                  <img
-                    key={movie.id}
-                    src={`${imageUrl}${
-                      large
-                        ? movie.poster_path
-                        : movie.backdrop_path
-                    }`}
-                    alt={movie.title || movie.name}
-                    className={
-                      large
-                        ? "movie-poster large"
-                        : "movie-poster"
-                    }
-                    onClick={() => handleTrailer(movie)}
-                  />
+                  <div className="movie-card" key={movie.id}>
+                    <img
+                      src={`${imageUrl}${
+                        large ? movie.poster_path : movie.backdrop_path
+                      }`}
+                      alt={movie.title || movie.name}
+                      className={large ? "movie-poster large" : "movie-poster"}
+                      onClick={() =>
+                        (window.location.href = `/movie/${movie.id}`)
+                      }
+                    />
+
+                    <button
+                      className="fav-btn"
+                      onClick={(e) => toggleFavorite(movie, e)}
+                    >
+                      {favorites.find((fav) => fav.id === movie.id)
+                        ? "❤️"
+                        : "🤍"}
+                    </button>
+
+                    <button
+                      className="trailer-btn"
+                      onClick={() => handleTrailer(movie)}
+                    >
+                      ▶
+                    </button>
+                  </div>
                 )
             )}
       </div>

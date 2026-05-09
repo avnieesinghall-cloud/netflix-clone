@@ -1,15 +1,33 @@
 import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+
 import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
 import MovieRow from "../components/MovieRow";
 import LoginModal from "../components/LoginModal";
-import { requests, searchMovies, imageUrl, fetchTrailer } from "../api/tmdb";
+
+import { auth } from "../firebase/firebase";
+import {
+  requests,
+  searchMovies,
+  imageUrl,
+  fetchTrailer,
+} from "../api/tmdb";
 
 function Home() {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showLogin, setShowLogin] = useState(false);
   const [trailer, setTrailer] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const delaySearch = setTimeout(async () => {
@@ -25,14 +43,28 @@ function Home() {
   }, [search]);
 
   const openTrailer = async (movie) => {
-    const video = await fetchTrailer(movie.id);
-    if (video) setTrailer(video.key);
-    else alert("Trailer not available");
+    try {
+      const mediaType =
+        movie.media_type ||
+        (movie.first_air_date ? "tv" : "movie");
+
+      const video = await fetchTrailer(movie.id, mediaType);
+
+      if (video) setTrailer(video.key);
+      else alert("Trailer not available");
+    } catch (error) {
+      alert("Trailer not available");
+    }
   };
 
   return (
     <>
-      <Navbar search={search} setSearch={setSearch} setShowLogin={setShowLogin} />
+      <Navbar
+        search={search}
+        setSearch={setSearch}
+        setShowLogin={setShowLogin}
+        user={user}
+      />
 
       {showLogin && <LoginModal setShowLogin={setShowLogin} />}
 
@@ -77,6 +109,7 @@ function Home() {
       {trailer && (
         <div className="trailer-modal">
           <button onClick={() => setTrailer(null)}>✕</button>
+
           <iframe
             src={`https://www.youtube.com/embed/${trailer}`}
             title="Movie Trailer"
