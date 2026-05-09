@@ -4,7 +4,9 @@ import { fetchMovies, fetchTrailer, imageUrl } from "../api/tmdb";
 function MovieRow({ title, fetchUrl, large }) {
   const [movies, setMovies] = useState([]);
   const [trailer, setTrailer] = useState(null);
+  const [showNoTrailer, setShowNoTrailer] = useState(false);
   const [loading, setLoading] = useState(true);
+
   const [favorites, setFavorites] = useState(
     JSON.parse(localStorage.getItem("favorites")) || []
   );
@@ -38,18 +40,26 @@ function MovieRow({ title, fetchUrl, large }) {
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
-  const handleTrailer = async (movie) => {
+  const handleTrailer = async (movie, e) => {
+    e.stopPropagation();
+
     try {
       const mediaType =
         movie.media_type || (movie.first_air_date ? "tv" : "movie");
 
       const video = await fetchTrailer(movie.id, mediaType);
 
-      if (video) setTrailer(video.key);
-      else alert("Trailer not available");
+      if (video) {
+        setTrailer(video.key);
+        setShowNoTrailer(false);
+      } else {
+        setTrailer(null);
+        setShowNoTrailer(true);
+      }
     } catch (error) {
       console.error("Error fetching trailer:", error);
-      alert("Trailer not available");
+      setTrailer(null);
+      setShowNoTrailer(true);
     }
   };
 
@@ -89,7 +99,7 @@ function MovieRow({ title, fetchUrl, large }) {
 
                     <button
                       className="trailer-btn"
-                      onClick={() => handleTrailer(movie)}
+                      onClick={(e) => handleTrailer(movie, e)}
                     >
                       ▶
                     </button>
@@ -107,6 +117,17 @@ function MovieRow({ title, fetchUrl, large }) {
             title="Movie Trailer"
             allowFullScreen
           ></iframe>
+        </div>
+      )}
+
+      {showNoTrailer && (
+        <div className="trailer-modal">
+          <button onClick={() => setShowNoTrailer(false)}>✕</button>
+
+          <div className="no-trailer-box">
+            <h2>Trailer Coming Soon 🎬</h2>
+            <p>This movie does not have an available trailer right now.</p>
+          </div>
         </div>
       )}
     </section>

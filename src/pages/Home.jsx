@@ -19,6 +19,7 @@ function Home() {
   const [searchResults, setSearchResults] = useState([]);
   const [showLogin, setShowLogin] = useState(false);
   const [trailer, setTrailer] = useState(null);
+  const [noTrailer, setNoTrailer] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -45,15 +46,21 @@ function Home() {
   const openTrailer = async (movie) => {
     try {
       const mediaType =
-        movie.media_type ||
-        (movie.first_air_date ? "tv" : "movie");
+        movie.media_type || (movie.first_air_date ? "tv" : "movie");
 
       const video = await fetchTrailer(movie.id, mediaType);
 
-      if (video) setTrailer(video.key);
-      else alert("Trailer not available");
+      if (video) {
+        setTrailer(video.key);
+        setNoTrailer(false);
+      } else {
+        setTrailer(null);
+        setNoTrailer(true);
+      }
     } catch (error) {
-      alert("Trailer not available");
+      console.error("Error fetching trailer:", error);
+      setTrailer(null);
+      setNoTrailer(true);
     }
   };
 
@@ -76,12 +83,22 @@ function Home() {
             {searchResults.map(
               (movie) =>
                 movie.poster_path && (
-                  <img
-                    key={movie.id}
-                    src={`${imageUrl}${movie.poster_path}`}
-                    alt={movie.title}
-                    onClick={() => openTrailer(movie)}
-                  />
+                  <div className="search-card" key={movie.id}>
+                    <img
+                      src={`${imageUrl}${movie.poster_path}`}
+                      alt={movie.title || movie.name}
+                      onClick={() =>
+                        (window.location.href = `/movie/${movie.id}`)
+                      }
+                    />
+
+                    <button
+                      className="trailer-btn search-trailer-btn"
+                      onClick={() => openTrailer(movie)}
+                    >
+                      ▶
+                    </button>
+                  </div>
                 )
             )}
           </div>
@@ -115,6 +132,17 @@ function Home() {
             title="Movie Trailer"
             allowFullScreen
           ></iframe>
+        </div>
+      )}
+
+      {noTrailer && (
+        <div className="trailer-modal">
+          <button onClick={() => setNoTrailer(false)}>✕</button>
+
+          <div className="no-trailer-box">
+            <h2>Trailer Coming Soon 🎬</h2>
+            <p>This movie does not have an available trailer right now.</p>
+          </div>
         </div>
       )}
     </>
