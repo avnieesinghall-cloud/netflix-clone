@@ -122,7 +122,7 @@ function Home() {
       ) : (
         <>
           <Banner />
-          <AIRecommendations />
+          {/* <AIRecommendations /> */}
           <ContinueWatching />
 
           <main>
