@@ -566,3 +566,71 @@ body {
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(18px);
 }
+.ai-section {
+  margin: -40px 40px 50px;
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 30px 80px rgba(229, 9, 20, 0.2);
+}
+
+.ai-section h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.ai-section p {
+  color: #bbb;
+  margin-bottom: 20px;
+}
+
+.ai-box {
+  display: flex;
+  gap: 14px;
+}
+
+.ai-box input {
+  flex: 1;
+  padding: 15px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  outline: none;
+}
+
+.ai-box button {
+  background: #e50914;
+  color: white;
+  border: none;
+  padding: 15px 24px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.ai-results {
+  margin-top: 22px;
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.ai-results pre {
+  white-space: pre-wrap;
+  color: #eee;
+  line-height: 1.7;
+  font-family: inherit;
+}
+
+@media (max-width: 768px) {
+  .ai-section {
+    margin: -20px 20px 40px;
+  }
+
+  .ai-box {
+    flex-direction: column;
+  }
+}
