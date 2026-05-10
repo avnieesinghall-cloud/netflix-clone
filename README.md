@@ -1,16 +1,90 @@
-# React + Vite
+# 🎬 StreamFlix — AI Powered OTT Streaming Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+StreamFlix is a premium Netflix-inspired OTT streaming platform built using **React.js**, **Firebase**, **Gemini AI**, and **TMDB API** with a modern cinematic glassmorphism UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# 🚀 Live Demo
 
-## React Compiler
+🌐 https://netflix-clone-h6ws.vercel.app
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+# 💻 GitHub Repository
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🔗 https://github.com/avnieesinghall-cloud/netflix-clone
+
+---
+
+# ✨ Features
+
+✅ Netflix Style Intro Animation  
+✅ Firebase Authentication  
+✅ AI Movie Recommendations 🤖  
+✅ Dynamic Movie Search  
+✅ Continue Watching System  
+✅ Watchlist Feature ❤️  
+✅ Trailer Popup System 🎥  
+✅ Dynamic Movie Details Pages  
+✅ Responsive Design 📱  
+✅ Premium Glassmorphism UI ✨  
+✅ Cinematic Hover Effects  
+✅ TMDB API Integration  
+✅ Modern OTT Layout  
+
+---
+
+# 🛠 Tech Stack
+
+### Frontend
+- React.js
+- Vite
+- JavaScript
+- CSS3
+
+### Authentication
+- Firebase Authentication
+
+### AI
+- Gemini AI API
+
+### APIs
+- TMDB API
+
+### Deployment
+- Vercel
+
+---
+
+# 📸 Screenshots
+
+## 🏠 Homepage
+
+![Homepage](public/screenshots/home.png)
+
+---
+
+## 🤖 AI Recommendations
+
+![AI](public/screenshots/ai.png)
+
+---
+
+## 🎥 Movie Details
+
+![Movie Details](public/screenshots/details.png)
+
+---
+
+## ❤️ Watchlist
+
+![Watchlist](public/screenshots/watchlist.png)
+
+---
+
+# ⚙️ Installation
+
+## Clone Repository
+
+```bash
+git clone https://github.com/avnieesinghall-cloud/netflix-clone.git
