@@ -37,6 +37,11 @@ function MovieRow({ title, fetchUrl, large }) {
     );
   };
 
+  const openDetails = (movie) => {
+    saveContinueWatching(movie);
+    window.location.href = `/movie/${movie.id}`;
+  };
+
   const toggleFavorite = (movie, e) => {
     e.stopPropagation();
 
@@ -92,22 +97,12 @@ function MovieRow({ title, fetchUrl, large }) {
                     }`}
                     alt={movie.title || movie.name}
                     className={large ? "movie-poster large" : "movie-poster"}
-                    onClick={() => {
-                      saveContinueWatching(movie);
-                      window.location.href = `/movie/${movie.id}`;
-                    }}
+                    onClick={() => openDetails(movie)}
                   />
 
                   <div className="movie-overlay">
                     <h4>{movie.title || movie.name}</h4>
-                    <button
-                      onClick={() => {
-                        saveContinueWatching(movie);
-                        window.location.href = `/movie/${movie.id}`;
-                      }}
-                    >
-                      Details
-                    </button>
+                    <button onClick={() => openDetails(movie)}>Details</button>
                   </div>
 
                   <button
@@ -132,7 +127,6 @@ function MovieRow({ title, fetchUrl, large }) {
       {trailer && (
         <div className="trailer-modal">
           <button onClick={() => setTrailer(null)}>✕</button>
-
           <iframe
             src={`https://www.youtube.com/embed/${trailer}`}
             title="Movie Trailer"

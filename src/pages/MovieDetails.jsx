@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { fetchTrailer, imageUrl } from "../api/tmdb";
 
-const API_KEY = "93b1722c320eba72fe07bc77a33886c1";
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
 function MovieDetails() {
@@ -75,7 +75,10 @@ function MovieDetails() {
         url(${imageUrl}${movie.backdrop_path})`,
       }}
     >
-      <button className="netflix-close-btn" onClick={() => window.history.back()}>
+      <button
+        className="netflix-close-btn"
+        onClick={() => window.history.back()}
+      >
         ✕
       </button>
 

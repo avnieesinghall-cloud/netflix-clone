@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "93b1722c320eba72fe07bc77a33886c1";
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
 export const imageUrl = "https://image.tmdb.org/t/p/original";
@@ -35,9 +35,7 @@ export const fetchTrailer = async (movieId, mediaType = "movie") => {
     `${BASE_URL}/${mediaType}/${movieId}/videos?api_key=${API_KEY}`
   );
 
-  const trailer = res.data.results.find(
+  return res.data.results.find(
     (video) => video.type === "Trailer" && video.site === "YouTube"
   );
-
-  return trailer;
 };

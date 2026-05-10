@@ -1644,3 +1644,153 @@ body {
     height: 105px;
   }
 }
+.movie-row {
+  margin-left: 4%;
+  margin-bottom: 42px;
+}
+
+.movie-row h2 {
+  font-size: 25px;
+  margin-bottom: 14px;
+}
+
+.movie-list {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 12px 0 65px;
+}
+
+.movie-list::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: 250px;
+  border-radius: 6px;
+  overflow: visible;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.movie-poster {
+  width: 250px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.movie-poster.large {
+  width: 170px;
+  height: 255px;
+}
+
+.movie-card:has(.movie-poster.large) {
+  width: 170px;
+}
+
+.movie-card:hover {
+  transform: scale(1.15) translateY(-12px);
+  z-index: 50;
+}
+
+.movie-card:hover .movie-poster {
+  box-shadow: 0 22px 65px rgba(0, 0, 0, 0.9);
+}
+
+.movie-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -58px;
+  background: #181818;
+  padding: 12px;
+  border-radius: 0 0 6px 6px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.3s ease;
+  z-index: 40;
+}
+
+.movie-card:hover .movie-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.movie-overlay h4 {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.movie-overlay button {
+  background: #e50914;
+  color: white;
+  padding: 7px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.fav-btn,
+.trailer-btn {
+  position: absolute;
+  bottom: 10px;
+  z-index: 60;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  opacity: 1 !important;
+}
+
+.fav-btn {
+  right: 10px;
+  background: rgba(0,0,0,0.75);
+}
+
+.trailer-btn {
+  left: 10px;
+  background: white;
+  color: black;
+}
+
+.trailer-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.92);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trailer-modal iframe {
+  width: 82vw;
+  height: 78vh;
+  border: none;
+  border-radius: 16px;
+}
+
+.trailer-modal > button {
+  position: fixed;
+  top: 25px;
+  right: 35px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #e50914;
+  color: white;
+  font-size: 24px;
+  z-index: 10000;
+}
+
+.no-trailer-box {
+  width: 420px;
+  max-width: 90%;
+  padding: 42px;
+  text-align: center;
+  border-radius: 22px;
+  background: #181818;
+}

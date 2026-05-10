@@ -19,7 +19,7 @@ function AIRecommendations() {
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
       if (!apiKey) {
-        setRecommendations("API key is missing. Check your .env file.");
+        setRecommendations("Gemini API key missing. Check your .env file.");
         return;
       }
 
@@ -30,8 +30,8 @@ function AIRecommendations() {
             {
               parts: [
                 {
-                  text: `Recommend 5 movies for this mood or genre: "${prompt}". 
-Give the answer in this format:
+                  text: `Recommend 5 movies for this mood/genre: ${prompt}. 
+Give answer like:
 1. Movie Name — one short reason
 2. Movie Name — one short reason
 3. Movie Name — one short reason
@@ -50,9 +50,11 @@ Give the answer in this format:
 
       setRecommendations(text);
     } catch (error) {
-      console.error("Gemini API Error:", error);
+      console.log("Gemini Full Error:", error.response?.data || error.message);
+
       setRecommendations(
-        "Something went wrong. Please check your Gemini API key and restart the server."
+        error.response?.data?.error?.message ||
+          "Something went wrong. Please check Gemini key."
       );
     } finally {
       setLoading(false);
