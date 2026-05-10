@@ -17,27 +17,26 @@ export const requests = {
 
 export const fetchMovies = async (url) => {
   const res = await axios.get(url);
-  return res.data.results;
+  return res.data.results || [];
 };
 
 export const searchMovies = async (query) => {
   const res = await axios.get(
-    `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}`
+    `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(
+      query
+    )}`
   );
-  return res.data.results;
+
+  return res.data.results || [];
 };
-export const fetchTrailer = async (
-  movieId,
-  mediaType = "movie"
-) => {
+
+export const fetchTrailer = async (movieId, mediaType = "movie") => {
   const res = await axios.get(
     `${BASE_URL}/${mediaType}/${movieId}/videos?api_key=${API_KEY}`
   );
 
   const trailer = res.data.results.find(
-    (video) =>
-      video.type === "Trailer" &&
-      video.site === "YouTube"
+    (video) => video.type === "Trailer" && video.site === "YouTube"
   );
 
   return trailer;
