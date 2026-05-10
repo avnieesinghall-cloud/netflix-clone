@@ -19,39 +19,39 @@ StreamFlix is a premium Netflix-inspired OTT streaming platform built using **Re
 # ✨ Features
 
 ✅ Netflix Style Intro Animation  
-✅ Firebase Authentication  
+✅ Firebase Authentication 🔐  
 ✅ AI Movie Recommendations 🤖  
-✅ Dynamic Movie Search  
-✅ Continue Watching System  
+✅ Dynamic Movie Search 🔎  
+✅ Continue Watching System ⏯  
 ✅ Watchlist Feature ❤️  
 ✅ Trailer Popup System 🎥  
-✅ Dynamic Movie Details Pages  
+✅ Dynamic Movie Details Pages 📄  
 ✅ Responsive Design 📱  
 ✅ Premium Glassmorphism UI ✨  
-✅ Cinematic Hover Effects  
-✅ TMDB API Integration  
-✅ Modern OTT Layout  
+✅ Cinematic Hover Effects 🔥  
+✅ TMDB API Integration 🎬  
+✅ Modern OTT Layout 🚀  
 
 ---
 
 # 🛠 Tech Stack
 
-### Frontend
+## Frontend
 - React.js
 - Vite
 - JavaScript
 - CSS3
 
-### Authentication
+## Authentication
 - Firebase Authentication
 
-### AI
+## AI
 - Gemini AI API
 
-### APIs
+## APIs
 - TMDB API
 
-### Deployment
+## Deployment
 - Vercel
 
 ---
@@ -60,25 +60,25 @@ StreamFlix is a premium Netflix-inspired OTT streaming platform built using **Re
 
 ## 🏠 Homepage
 
-![Homepage](public/screenshots/home.png)
+![Homepage](./public/screenshots/home.png)
 
 ---
 
 ## 🤖 AI Recommendations
 
-![AI](public/screenshots/ai.png)
+![AI Recommendations](./public/screenshots/ai.png)
 
 ---
 
 ## 🎥 Movie Details
 
-![Movie Details](public/screenshots/details.png)
+![Movie Details](./public/screenshots/details.png)
 
 ---
 
 ## ❤️ Watchlist
 
-![Watchlist](public/screenshots/watchlist.png)
+![Watchlist](./public/screenshots/watchlist.png)
 
 ---
 
