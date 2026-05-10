@@ -3,24 +3,43 @@ import { auth } from "../firebase/firebase";
 
 function Navbar({ search, setSearch, setShowLogin, user }) {
   const logout = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
     <nav className="navbar">
-      <h1>StreamFlix</h1>
+      <h1
+        style={{ cursor: "pointer" }}
+        onClick={() => (window.location.href = "/")}
+      >
+        StreamFlix
+      </h1>
 
-      <input
-        type="text"
-        placeholder="Search movies..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="search-input"
-      />
+      {setSearch && (
+        <input
+          type="text"
+          placeholder="Search movies..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="search-input"
+        />
+      )}
+
+      <button
+        className="nav-watchlist"
+        onClick={() => (window.location.href = "/watchlist")}
+      >
+        My List
+      </button>
 
       {user ? (
         <div className="user-box">
           <span>{user.email}</span>
+
           <button className="login-btn" onClick={logout}>
             Logout
           </button>
