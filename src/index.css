@@ -1038,3 +1038,214 @@ body {
     0 0 25px rgba(229, 9, 20, 0.55),
     0 0 55px rgba(229, 9, 20, 0.18);
 }
+/* ===== NETFLIX-LIKE FINAL UI POLISH ===== */
+
+body {
+  background: #000 !important;
+}
+
+.navbar {
+  height: 72px;
+  padding: 0 4% !important;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.25)) !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.navbar h1 {
+  font-size: 34px !important;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  color: #e50914 !important;
+}
+
+.search-input {
+  height: 42px;
+  width: 300px;
+  background: rgba(20, 20, 20, 0.9) !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+  border-radius: 6px !important;
+}
+
+.nav-watchlist,
+.login-btn {
+  border-radius: 6px !important;
+}
+
+.banner {
+  height: 82vh !important;
+  padding: 0 4% !important;
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, #000 0%, rgba(0,0,0,0.65) 35%, transparent 70%),
+    linear-gradient(to top, #000 0%, transparent 35%);
+  z-index: 1;
+}
+
+.banner-content {
+  z-index: 2;
+  max-width: 620px !important;
+}
+
+.banner-content h2 {
+  font-size: clamp(48px, 6vw, 86px) !important;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+.banner-content p {
+  font-size: 20px !important;
+  max-width: 680px;
+  color: #f1f1f1 !important;
+}
+
+.banner-content button {
+  background: #fff !important;
+  color: #000 !important;
+  border-radius: 5px !important;
+  font-size: 18px;
+  padding: 14px 38px !important;
+}
+
+.ai-section {
+  margin: -35px 4% 45px !important;
+}
+
+.movie-row,
+.continue-section {
+  margin-left: 4% !important;
+  margin-bottom: 38px !important;
+}
+
+.movie-row h2,
+.continue-section h2 {
+  font-size: 25px !important;
+  margin-bottom: 12px !important;
+}
+
+.movie-list {
+  gap: 8px !important;
+  padding: 8px 0 48px !important;
+}
+
+.movie-card {
+  width: 250px !important;
+  border-radius: 6px !important;
+  background: transparent !important;
+  border: none !important;
+  overflow: visible !important;
+}
+
+.movie-card .movie-poster {
+  width: 250px !important;
+  height: 140px !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+.movie-card .movie-poster.large {
+  width: 170px !important;
+  height: 255px !important;
+}
+
+.movie-card:has(.movie-poster.large) {
+  width: 170px !important;
+}
+
+.movie-card:hover {
+  transform: scale(1.18) translateY(-15px) !important;
+  z-index: 20;
+}
+
+.movie-card:hover .movie-poster {
+  filter: brightness(1.08) !important;
+  box-shadow: 0 20px 55px rgba(0,0,0,0.9) !important;
+}
+
+.movie-overlay {
+  border-radius: 0 0 6px 6px;
+  background: #181818 !important;
+  padding: 14px !important;
+  bottom: -70px !important;
+}
+
+.fav-btn,
+.trailer-btn {
+  opacity: 0;
+}
+
+.movie-card:hover .fav-btn,
+.movie-card:hover .trailer-btn {
+  opacity: 1;
+}
+
+.trailer-btn {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.fav-btn {
+  background: rgba(40,40,40,0.9) !important;
+}
+
+.details-content {
+  background: rgba(0,0,0,0.55) !important;
+  border-radius: 8px !important;
+}
+
+.watchlist-page,
+.search-section {
+  padding-top: 105px !important;
+  background: #000 !important;
+}
+
+.search-grid {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+}
+
+.search-card img,
+.watchlist-card img {
+  border-radius: 6px !important;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: 76px;
+    padding: 0 18px !important;
+  }
+
+  .navbar h1 {
+    font-size: 24px !important;
+  }
+
+  .search-input {
+    width: 145px !important;
+  }
+
+  .banner {
+    height: 72vh !important;
+  }
+
+  .movie-card {
+    width: 190px !important;
+  }
+
+  .movie-card .movie-poster {
+    width: 190px !important;
+    height: 108px !important;
+  }
+
+  .movie-card .movie-poster.large {
+    width: 135px !important;
+    height: 205px !important;
+  }
+
+  .movie-card:has(.movie-poster.large) {
+    width: 135px !important;
+  }
+}
