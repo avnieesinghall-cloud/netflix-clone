@@ -790,3 +790,141 @@ body {
     width: 145px;
   }
 }
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: radial-gradient(circle at center, #220000, #000 55%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  animation: introFadeOut 0.8s ease forwards;
+  animation-delay: 2.6s;
+}
+
+.intro-logo {
+  display: flex;
+  gap: 6px;
+  color: #e50914;
+  font-size: clamp(44px, 8vw, 110px);
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-shadow: 0 0 35px rgba(229, 9, 20, 0.9);
+}
+
+.intro-logo span {
+  opacity: 0;
+  transform: scale(0.4) rotateY(90deg);
+  animation: letterReveal 0.55s ease forwards;
+}
+
+.intro-logo span:nth-child(1) { animation-delay: 0.1s; }
+.intro-logo span:nth-child(2) { animation-delay: 0.18s; }
+.intro-logo span:nth-child(3) { animation-delay: 0.26s; }
+.intro-logo span:nth-child(4) { animation-delay: 0.34s; }
+.intro-logo span:nth-child(5) { animation-delay: 0.42s; }
+.intro-logo span:nth-child(6) { animation-delay: 0.5s; }
+.intro-logo span:nth-child(7) { animation-delay: 0.58s; }
+.intro-logo span:nth-child(8) { animation-delay: 0.66s; }
+.intro-logo span:nth-child(9) { animation-delay: 0.74s; }
+.intro-logo span:nth-child(10) { animation-delay: 0.82s; }
+
+.intro-line {
+  width: 0;
+  height: 4px;
+  margin-top: 22px;
+  background: linear-gradient(90deg, transparent, #e50914, transparent);
+  box-shadow: 0 0 35px rgba(229, 9, 20, 0.9);
+  animation: lineExpand 1.4s ease forwards;
+  animation-delay: 1s;
+}
+
+@keyframes letterReveal {
+  to {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+  }
+}
+
+@keyframes lineExpand {
+  to {
+    width: min(520px, 78vw);
+  }
+}
+
+@keyframes introFadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: radial-gradient(circle at center, #220000, #000 55%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  animation: introFadeOut 0.8s ease forwards;
+  animation-delay: 2.6s;
+}
+
+.intro-logo {
+  display: flex;
+  gap: 6px;
+  color: #e50914;
+  font-size: clamp(44px, 8vw, 110px);
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-shadow: 0 0 35px rgba(229, 9, 20, 0.9);
+}
+
+.intro-logo span {
+  opacity: 0;
+  transform: scale(0.4) rotateY(90deg);
+  animation: letterReveal 0.55s ease forwards;
+}
+
+.intro-logo span:nth-child(1) { animation-delay: 0.1s; }
+.intro-logo span:nth-child(2) { animation-delay: 0.18s; }
+.intro-logo span:nth-child(3) { animation-delay: 0.26s; }
+.intro-logo span:nth-child(4) { animation-delay: 0.34s; }
+.intro-logo span:nth-child(5) { animation-delay: 0.42s; }
+.intro-logo span:nth-child(6) { animation-delay: 0.5s; }
+.intro-logo span:nth-child(7) { animation-delay: 0.58s; }
+.intro-logo span:nth-child(8) { animation-delay: 0.66s; }
+.intro-logo span:nth-child(9) { animation-delay: 0.74s; }
+.intro-logo span:nth-child(10) { animation-delay: 0.82s; }
+
+.intro-line {
+  width: 0;
+  height: 4px;
+  margin-top: 22px;
+  background: linear-gradient(90deg, transparent, #e50914, transparent);
+  box-shadow: 0 0 35px rgba(229, 9, 20, 0.9);
+  animation: lineExpand 1.4s ease forwards;
+  animation-delay: 1s;
+}
+
+@keyframes letterReveal {
+  to {
+    opacity: 1;
+    transform: scale(1) rotateY(0);
+  }
+}
+
+@keyframes lineExpand {
+  to {
+    width: min(520px, 78vw);
+  }
+}
+
+@keyframes introFadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

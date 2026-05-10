@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 
+import IntroAnimation from "../components/IntroAnimation";
 import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
 import MovieRow from "../components/MovieRow";
@@ -78,6 +79,8 @@ function Home() {
 
   return (
     <>
+      <IntroAnimation />
+
       <Navbar
         search={search}
         setSearch={setSearch}
