@@ -12,12 +12,7 @@ function Navbar({ search, setSearch, setShowLogin, user }) {
 
   return (
     <nav className="navbar">
-      <h1
-        style={{ cursor: "pointer" }}
-        onClick={() => (window.location.href = "/")}
-      >
-        StreamFlix
-      </h1>
+      <h1 onClick={() => (window.location.href = "/")}>StreamFlix</h1>
 
       {setSearch && (
         <input
@@ -38,6 +33,10 @@ function Navbar({ search, setSearch, setShowLogin, user }) {
 
       {user ? (
         <div className="user-box">
+          <div className="profile-avatar">
+            {user.email?.charAt(0).toUpperCase()}
+          </div>
+
           <span>{user.email}</span>
 
           <button className="login-btn" onClick={logout}>

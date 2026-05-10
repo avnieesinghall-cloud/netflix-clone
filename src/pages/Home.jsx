@@ -6,6 +6,7 @@ import Banner from "../components/Banner";
 import MovieRow from "../components/MovieRow";
 import LoginModal from "../components/LoginModal";
 import AIRecommendations from "../components/AIRecommendations";
+import ContinueWatching from "../components/ContinueWatching";
 
 import { auth } from "../firebase/firebase";
 import {
@@ -43,6 +44,16 @@ function Home() {
 
     return () => clearTimeout(delaySearch);
   }, [search]);
+
+  const saveContinueWatching = (movie) => {
+    const watched = JSON.parse(localStorage.getItem("continueWatching")) || [];
+    const filtered = watched.filter((item) => item.id !== movie.id);
+
+    localStorage.setItem(
+      "continueWatching",
+      JSON.stringify([movie, ...filtered].slice(0, 8))
+    );
+  };
 
   const openTrailer = async (movie) => {
     try {
@@ -88,9 +99,10 @@ function Home() {
                     <img
                       src={`${imageUrl}${movie.poster_path}`}
                       alt={movie.title || movie.name}
-                      onClick={() =>
-                        (window.location.href = `/movie/${movie.id}`)
-                      }
+                      onClick={() => {
+                        saveContinueWatching(movie);
+                        window.location.href = `/movie/${movie.id}`;
+                      }}
                     />
 
                     <button
@@ -107,8 +119,8 @@ function Home() {
       ) : (
         <>
           <Banner />
-
           <AIRecommendations />
+          <ContinueWatching />
 
           <main>
             <MovieRow

@@ -27,6 +27,16 @@ function MovieRow({ title, fetchUrl, large }) {
     getMovies();
   }, [fetchUrl]);
 
+  const saveContinueWatching = (movie) => {
+    const watched = JSON.parse(localStorage.getItem("continueWatching")) || [];
+    const filtered = watched.filter((item) => item.id !== movie.id);
+
+    localStorage.setItem(
+      "continueWatching",
+      JSON.stringify([movie, ...filtered].slice(0, 8))
+    );
+  };
+
   const toggleFavorite = (movie, e) => {
     e.stopPropagation();
 
@@ -68,44 +78,55 @@ function MovieRow({ title, fetchUrl, large }) {
       <h2>{title}</h2>
 
       <div className="movie-list">
-        {loading
-          ? Array(8)
-              .fill(0)
-              .map((_, index) => <div className="skeleton" key={index}></div>)
-          : movies.map(
-              (movie) =>
-                ((large && movie.poster_path) ||
-                  (!large && movie.backdrop_path)) && (
-                  <div className="movie-card" key={movie.id}>
-                    <img
-                      src={`${imageUrl}${
-                        large ? movie.poster_path : movie.backdrop_path
-                      }`}
-                      alt={movie.title || movie.name}
-                      className={large ? "movie-poster large" : "movie-poster"}
-                      onClick={() =>
-                        (window.location.href = `/movie/${movie.id}`)
-                      }
-                    />
+        {loading ? (
+          <div className="spinner"></div>
+        ) : (
+          movies.map(
+            (movie) =>
+              ((large && movie.poster_path) ||
+                (!large && movie.backdrop_path)) && (
+                <div className="movie-card" key={movie.id}>
+                  <img
+                    src={`${imageUrl}${
+                      large ? movie.poster_path : movie.backdrop_path
+                    }`}
+                    alt={movie.title || movie.name}
+                    className={large ? "movie-poster large" : "movie-poster"}
+                    onClick={() => {
+                      saveContinueWatching(movie);
+                      window.location.href = `/movie/${movie.id}`;
+                    }}
+                  />
 
+                  <div className="movie-overlay">
+                    <h4>{movie.title || movie.name}</h4>
                     <button
-                      className="fav-btn"
-                      onClick={(e) => toggleFavorite(movie, e)}
+                      onClick={() => {
+                        saveContinueWatching(movie);
+                        window.location.href = `/movie/${movie.id}`;
+                      }}
                     >
-                      {favorites.find((fav) => fav.id === movie.id)
-                        ? "❤️"
-                        : "🤍"}
-                    </button>
-
-                    <button
-                      className="trailer-btn"
-                      onClick={(e) => handleTrailer(movie, e)}
-                    >
-                      ▶
+                      Details
                     </button>
                   </div>
-                )
-            )}
+
+                  <button
+                    className="fav-btn"
+                    onClick={(e) => toggleFavorite(movie, e)}
+                  >
+                    {favorites.find((fav) => fav.id === movie.id) ? "❤️" : "🤍"}
+                  </button>
+
+                  <button
+                    className="trailer-btn"
+                    onClick={(e) => handleTrailer(movie, e)}
+                  >
+                    ▶
+                  </button>
+                </div>
+              )
+          )
+        )}
       </div>
 
       {trailer && (
