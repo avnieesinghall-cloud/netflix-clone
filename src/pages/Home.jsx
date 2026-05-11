@@ -6,7 +6,6 @@ import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
 import MovieRow from "../components/MovieRow";
 import LoginModal from "../components/LoginModal";
-import AIRecommendations from "../components/AIRecommendations";
 import ContinueWatching from "../components/ContinueWatching";
 
 import { auth } from "../firebase/firebase";
@@ -122,7 +121,6 @@ function Home() {
       ) : (
         <>
           <Banner />
-          {/* <AIRecommendations /> */}
           <ContinueWatching />
 
           <main>
