@@ -91,19 +91,25 @@ The project focuses on frontend architecture, API integration, responsive design
 ## 🏠 Home Page
 
 <img width="100%" alt="Home Page" src="./public/screenshots/home.png" />
-
+<div>
+ ![logo](https://github.com/avnieesinghall-cloud/netflix-clone/blob/main/WhatsApp%20Image%202026-05-11%20at%2002.47.12.jpeg)
+</div>
 ---
 
 ## 🎬 Movie Details Page
 
 <img width="100%" alt="Movie Details" src="./public/screenshots/details.png" />
-
+<div>
+ ![logo](https://github.com/NexVed/NexVed/blob/main/banner.png)
+</div>
 ---
 
 ## ❤️ Watchlist
 
 <img width="100%" alt="Watchlist" src="./public/screenshots/watchlist.png" />
-
+<div>
+ ![logo](https://github.com/NexVed/NexVed/blob/main/banner.png)
+</div>
 ---
 
 ## 🤖 AI Recommendation UI
