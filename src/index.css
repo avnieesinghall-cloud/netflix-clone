@@ -2214,3 +2214,309 @@ body {
       0 0 40px rgba(229,9,20,0.35);
   }
 }
+/* =========================================
+   FINAL MOBILE RESPONSIVE NETFLIX UI
+========================================= */
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  /* NAVBAR */
+  .navbar {
+    height: auto !important;
+    padding: 14px 16px !important;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.92) !important;
+  }
+
+  .navbar h1 {
+    font-size: 26px !important;
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100% !important;
+    height: 42px;
+    order: 2;
+  }
+
+  .user-box {
+    gap: 8px;
+  }
+
+  .user-box span {
+    display: none;
+  }
+
+  .profile-avatar {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+
+  .nav-watchlist,
+  .login-btn {
+    padding: 9px 12px !important;
+    font-size: 13px;
+  }
+
+  /* BANNER */
+  .banner {
+    height: 72vh !important;
+    padding: 110px 20px 40px !important;
+    align-items: flex-end;
+    background-position: center !important;
+  }
+
+  .banner::before {
+    background:
+      linear-gradient(to top, #000 0%, rgba(0,0,0,0.65) 45%, transparent 100%),
+      linear-gradient(to right, rgba(0,0,0,0.8), transparent) !important;
+  }
+
+  .banner-content {
+    max-width: 100% !important;
+  }
+
+  .banner-content h2 {
+    font-size: 36px !important;
+    line-height: 1.05;
+    letter-spacing: -1px;
+  }
+
+  .banner-content p {
+    font-size: 14px !important;
+    line-height: 1.5;
+    max-height: 110px;
+    overflow: hidden;
+  }
+
+  .banner-content button {
+    padding: 11px 24px !important;
+    font-size: 15px !important;
+  }
+
+  /* AI SECTION */
+  .ai-section {
+    margin: 20px 16px 36px !important;
+    padding: 20px !important;
+    border-radius: 18px !important;
+  }
+
+  .ai-section h2 {
+    font-size: 22px !important;
+  }
+
+  .ai-box {
+    flex-direction: column;
+  }
+
+  .ai-box input,
+  .ai-box button {
+    width: 100%;
+  }
+
+  /* MOVIE ROWS */
+  .movie-row,
+  .continue-section {
+    margin-left: 16px !important;
+    margin-bottom: 28px !important;
+  }
+
+  .movie-row h2,
+  .continue-section h2 {
+    font-size: 20px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .movie-list {
+    gap: 10px !important;
+    padding: 8px 16px 45px 0 !important;
+  }
+
+  .movie-card {
+    width: 170px !important;
+    border-radius: 8px !important;
+  }
+
+  .movie-card .movie-poster {
+    width: 170px !important;
+    height: 96px !important;
+    border-radius: 8px !important;
+  }
+
+  .movie-card .movie-poster.large {
+    width: 130px !important;
+    height: 195px !important;
+  }
+
+  .movie-card:has(.movie-poster.large) {
+    width: 130px !important;
+  }
+
+  .movie-card:hover {
+    transform: scale(1.04) translateY(-5px) !important;
+  }
+
+  .movie-overlay {
+    bottom: -55px !important;
+    padding: 10px !important;
+  }
+
+  .movie-overlay h4 {
+    font-size: 12px !important;
+  }
+
+  .fav-btn,
+  .trailer-btn {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 14px !important;
+  }
+
+  /* SEARCH PAGE */
+  .search-section {
+    padding: 120px 16px 50px !important;
+  }
+
+  .search-section h2 {
+    font-size: 26px !important;
+    margin-bottom: 22px !important;
+  }
+
+  .search-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .search-card {
+    height: 240px !important;
+    border-radius: 8px !important;
+  }
+
+  .search-card:hover {
+    transform: scale(1.03) !important;
+  }
+
+  .search-overlay h3 {
+    font-size: 13px !important;
+  }
+
+  .search-play-btn,
+  .search-add-btn {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  /* DETAILS PAGE */
+  .netflix-details-page {
+    min-height: 100vh;
+    padding: 100px 20px 40px !important;
+    background-position: center top !important;
+  }
+
+  .netflix-details-content {
+    max-width: 100% !important;
+    padding-top: 260px !important;
+  }
+
+  .netflix-label {
+    font-size: 13px;
+    letter-spacing: 5px;
+  }
+
+  .netflix-details-content h1 {
+    font-size: 42px !important;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .netflix-meta {
+    gap: 10px !important;
+    font-size: 14px !important;
+  }
+
+  .netflix-overview {
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+  }
+
+  .netflix-actions {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  .play-btn,
+  .dark-btn {
+    width: 100%;
+    padding: 13px 20px !important;
+    font-size: 15px !important;
+  }
+
+  .netflix-close-btn {
+    top: 80px !important;
+    right: 18px !important;
+    width: 45px !important;
+    height: 45px !important;
+    font-size: 22px !important;
+  }
+
+  /* WATCHLIST */
+  .watchlist-page {
+    padding: 110px 16px 50px !important;
+  }
+
+  .watchlist-page h1 {
+    font-size: 32px !important;
+  }
+
+  .watchlist-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  .watchlist-card {
+    padding: 10px !important;
+    border-radius: 14px !important;
+  }
+
+  .watchlist-card img {
+    height: 220px !important;
+    border-radius: 10px !important;
+  }
+
+  .watchlist-card h3 {
+    font-size: 13px !important;
+  }
+
+  /* MODALS */
+  .trailer-modal iframe {
+    width: 94vw !important;
+    height: 38vh !important;
+    border-radius: 14px !important;
+  }
+
+  .trailer-modal > button {
+    top: 18px !important;
+    right: 18px !important;
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .no-trailer-box {
+    width: 90% !important;
+    padding: 35px 22px !important;
+  }
+
+  /* TOAST */
+  .netflix-toast {
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 24px !important;
+    justify-content: center;
+  }
+}
