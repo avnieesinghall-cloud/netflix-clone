@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addToWatchlist } from "../utils/watchlist";
 
-const API_KEY = "93b1722c320eba72fe07bc77a33886c1";
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function MovieDetails() {
