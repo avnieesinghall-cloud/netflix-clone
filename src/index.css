@@ -2520,3 +2520,72 @@ body {
     justify-content: center;
   }
 }
+/* =========================================
+   FULL SCREEN WEBSITE FIX
+========================================= */
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: #000;
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* Make main website sections full width */
+main,
+section {
+  width: 100%;
+}
+
+/* Netflix-style full screen banner */
+.banner {
+  width: 100% !important;
+  min-height: 100vh !important;
+  background-size: cover !important;
+  background-position: center center !important;
+}
+
+/* Keep navbar full width */
+.navbar {
+  width: 100% !important;
+  left: 0;
+  right: 0;
+}
+
+/* Details page full screen */
+.netflix-details-page,
+.details-page,
+.watchlist-page,
+.search-section {
+  width: 100% !important;
+  min-height: 100vh !important;
+}
+
+/* Trailer modal full screen */
+.trailer-modal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Mobile full screen fix */
+@media (max-width: 768px) {
+  .banner {
+    min-height: 100vh !important;
+  }
+
+  .netflix-details-page,
+  .watchlist-page,
+  .search-section {
+    min-height: 100vh !important;
+  }
+}
