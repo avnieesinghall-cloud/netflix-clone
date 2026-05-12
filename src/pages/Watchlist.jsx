@@ -1,57 +1,60 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { imageUrl } from "../api/tmdb";
+import { useNavigate } from "react-router-dom";
+import { getWatchlist, removeFromWatchlist } from "../utils/watchlist";
+
+const imageUrl = "https://image.tmdb.org/t/p/w500";
 
 function Watchlist() {
-  const [favorites, setFavorites] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(saved);
+    setMovies(getWatchlist());
   }, []);
 
-  const removeFavorite = (id) => {
-    const updated = favorites.filter((movie) => movie.id !== id);
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
+  const handleRemove = (id) => {
+    removeFromWatchlist(id);
+    setMovies(getWatchlist());
   };
 
   return (
-    <>
-      <Navbar search="" setSearch={() => {}} setShowLogin={() => {}} />
+    <div className="watchlist-page">
+      <h1>My List</h1>
+      <p>Your saved movies and shows appear here.</p>
 
-      <main className="watchlist-page">
-        <h1>My Watchlist ❤️</h1>
-        <p>Your saved movies appear here.</p>
+      {movies.length === 0 ? (
+        <div className="empty-watchlist">
+          <h2>No movies added yet</h2>
+          <p>Add movies from Search Results, Continue Watching, or Details Page.</p>
 
-        {favorites.length === 0 ? (
-          <div className="empty-watchlist">
-            <h2>No movies saved yet 🎬</h2>
-            <button onClick={() => (window.location.href = "/")}>
-              Browse Movies
-            </button>
-          </div>
-        ) : (
-          <div className="watchlist-grid">
-            {favorites.map((movie) => (
-              <div className="watchlist-card" key={movie.id}>
-                <img
-                  src={`${imageUrl}${movie.poster_path || movie.backdrop_path}`}
-                  alt={movie.title || movie.name}
-                  onClick={() => (window.location.href = `/movie/${movie.id}`)}
-                />
+          <button onClick={() => navigate("/")}>Go Home</button>
+        </div>
+      ) : (
+        <div className="watchlist-grid">
+          {movies.map((movie) => (
+            <div className="watchlist-card" key={`${movie.id}-${movie.media_type}`}>
+              <img
+                src={
+                  movie.poster_path
+                    ? `${imageUrl}${movie.poster_path}`
+                    : movie.backdrop_path
+                    ? `${imageUrl}${movie.backdrop_path}`
+                    : "https://via.placeholder.com/500x750?text=No+Image"
+                }
+                alt={movie.title || movie.name}
+                onClick={() =>
+                  navigate(`/movie/${movie.id}/${movie.media_type || "movie"}`)
+                }
+              />
 
-                <h3>{movie.title || movie.name}</h3>
+              <h3>{movie.title || movie.name}</h3>
 
-                <button onClick={() => removeFavorite(movie.id)}>
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </main>
-    </>
+              <button onClick={() => handleRemove(movie.id)}>Remove</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

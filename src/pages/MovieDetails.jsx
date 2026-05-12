@@ -1,158 +1,210 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import { fetchTrailer, imageUrl } from "../api/tmdb";
+// src/pages/MovieDetails.jsx
 
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const BASE_URL = "https://api.themoviedb.org/3";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { addToWatchlist } from "../utils/watchlist";
+
+const API_KEY = "93b1722c320eba72fe07bc77a33886c1";
+const imageUrl = "https://image.tmdb.org/t/p/original";
 
 function MovieDetails() {
-  const { id } = useParams();
+  const { id, mediaType } = useParams();
+  const navigate = useNavigate();
 
   const [movie, setMovie] = useState(null);
-  const [similarMovies, setSimilarMovies] = useState([]);
+  const [finalMediaType, setFinalMediaType] = useState(mediaType || "movie");
+  const [loading, setLoading] = useState(true);
   const [trailer, setTrailer] = useState(null);
   const [noTrailer, setNoTrailer] = useState(false);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
+    const fetchDetails = async () => {
       try {
-        const movieRes = await axios.get(
-          `${BASE_URL}/movie/${id}?api_key=${API_KEY}`
+        setLoading(true);
+
+        let type = mediaType || "movie";
+
+        let res = await fetch(
+          `https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}&language=en-US`
         );
 
-        const similarRes = await axios.get(
-          `${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}`
-        );
+        let data = await res.json();
 
-        setMovie(movieRes.data);
-        setSimilarMovies(similarRes.data.results || []);
+        if (data.success === false && !mediaType) {
+          type = "tv";
+
+          res = await fetch(
+            `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`
+          );
+
+          data = await res.json();
+        }
+
+        if (data.success === false) {
+          setMovie(null);
+        } else {
+          setMovie(data);
+          setFinalMediaType(type);
+        }
       } catch (error) {
-        console.error("Error fetching movie details:", error);
+        console.log("Movie Details Error:", error);
+        setMovie(null);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchMovieDetails();
-  }, [id]);
+    fetchDetails();
+  }, [id, mediaType]);
 
-  const openTrailer = async () => {
+  const showToast = (message) => {
+    setToast(message);
+
+    setTimeout(() => {
+      setToast(null);
+    }, 2500);
+  };
+
+  const playTrailer = async () => {
     try {
-      const video = await fetchTrailer(id, "movie");
+      setNoTrailer(false);
 
-      if (video) {
-        setTrailer(video.key);
-        setNoTrailer(false);
+      const res = await fetch(
+        `https://api.themoviedb.org/3/${finalMediaType}/${id}/videos?api_key=${API_KEY}&language=en-US`
+      );
+
+      const data = await res.json();
+
+      const trailerVideo = data.results?.find(
+        (video) =>
+          video.site === "YouTube" &&
+          (video.type === "Trailer" || video.type === "Teaser")
+      );
+
+      if (trailerVideo) {
+        setTrailer(trailerVideo.key);
       } else {
-        setTrailer(null);
         setNoTrailer(true);
       }
     } catch (error) {
-      setTrailer(null);
+      console.log("Trailer Error:", error);
       setNoTrailer(true);
     }
   };
 
-  const addToContinueWatching = (item) => {
-    const watched = JSON.parse(localStorage.getItem("continueWatching")) || [];
-    const filtered = watched.filter((movie) => movie.id !== item.id);
+  const handleAddToWatchlist = () => {
+    const result = addToWatchlist({
+      ...movie,
+      id: Number(id),
+      media_type: finalMediaType,
+    });
 
-    localStorage.setItem(
-      "continueWatching",
-      JSON.stringify([item, ...filtered].slice(0, 8))
-    );
+    showToast(result.message);
   };
 
+  if (loading) {
+    return (
+      <div className="details-loading">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
+
   if (!movie) {
-    return <h1 className="details-loading">Loading movie details...</h1>;
+    return (
+      <div className="details-loading">
+        <h1>Movie not found</h1>
+      </div>
+    );
   }
 
   return (
-    <section
-      className="netflix-details-page"
-      style={{
-        backgroundImage: `linear-gradient(to right, #000 0%, rgba(0,0,0,0.82) 32%, rgba(0,0,0,0.35) 62%, rgba(0,0,0,0.05) 100%), 
-        linear-gradient(to top, #000 0%, rgba(0,0,0,0.15) 45%, transparent 100%), 
-        url(${imageUrl}${movie.backdrop_path})`,
-      }}
-    >
-      <button
-        className="netflix-close-btn"
-        onClick={() => window.history.back()}
+    <>
+      <div
+        className="netflix-details-page"
+        style={{
+          backgroundImage: `
+            linear-gradient(
+              to right,
+              rgba(0,0,0,0.95),
+              rgba(0,0,0,0.72),
+              rgba(0,0,0,0.25)
+            ),
+            url(${imageUrl}${movie.backdrop_path || movie.poster_path})
+          `,
+        }}
       >
-        ✕
-      </button>
+        <button className="netflix-close-btn" onClick={() => navigate(-1)}>
+          ✕
+        </button>
 
-      <div className="netflix-details-content">
-        <p className="netflix-label">N FILM</p>
+        <div className="netflix-details-content">
+          <p className="netflix-label">NETFLIX</p>
 
-        <h1>{movie.title || movie.name}</h1>
+          <h1>
+            {movie.title ||
+              movie.name ||
+              movie.original_title ||
+              movie.original_name ||
+              "Untitled"}
+          </h1>
 
-        <div className="netflix-meta">
-          <span>{movie.release_date?.slice(0, 4) || "N/A"}</span>
-          <span className="meta-badge">U/A 13+</span>
-          <span>{movie.runtime ? `${movie.runtime} min` : "N/A"}</span>
-          <span className="meta-badge">HD</span>
-          <span className="meta-badge">
-            ⭐ {movie.vote_average ? movie.vote_average.toFixed(1) : "N/A"}
-          </span>
-        </div>
+          <div className="netflix-meta">
+            <span>⭐ {movie.vote_average?.toFixed(1) || "N/A"}</span>
 
-        <p className="netflix-overview">
-          {movie.overview || "No overview available."}
-        </p>
+            <span>
+              {movie.release_date?.split("-")[0] ||
+                movie.first_air_date?.split("-")[0] ||
+                "N/A"}
+            </span>
 
-        <div className="netflix-actions">
-          <button
-            className="play-btn"
-            onClick={() => {
-              addToContinueWatching(movie);
-              openTrailer();
-            }}
-          >
-            ▶ Play
-          </button>
+            <span className="meta-badge">
+              {finalMediaType === "tv" ? "TV SHOW" : "MOVIE"}
+            </span>
 
-          <button className="dark-btn" onClick={openTrailer}>
-            ▶ Trailer
-          </button>
+            {movie.runtime && <span>{movie.runtime} min</span>}
 
-          <button className="circle-action">＋</button>
-          <button className="circle-action">♡</button>
-        </div>
+            {movie.number_of_seasons && (
+              <span>{movie.number_of_seasons} Seasons</span>
+            )}
+          </div>
 
-        <div className="netflix-extra">
-          <p>
-            <strong>Genres:</strong>{" "}
-            {movie.genres?.length
-              ? movie.genres.map((genre) => genre.name).join(", ")
-              : "N/A"}
+          <p className="netflix-overview">
+            {movie.overview || "No description available."}
           </p>
 
-          <p>
-            <strong>This movie is:</strong> Cinematic, Emotional, Entertaining
-          </p>
-        </div>
-      </div>
+          <div className="netflix-actions">
+            <button className="play-btn" onClick={playTrailer}>
+              ▶ Play Trailer
+            </button>
 
-      <div className="more-like-this">
-        <h2>More Like This</h2>
+            <button className="dark-btn" onClick={handleAddToWatchlist}>
+              + My List
+            </button>
+          </div>
 
-        <div className="more-row">
-          {similarMovies.slice(0, 8).map(
-            (item) =>
-              item.backdrop_path && (
-                <div className="more-card" key={item.id}>
-                  <img
-                    src={`${imageUrl}${item.backdrop_path}`}
-                    alt={item.title || item.name}
-                    onClick={() => {
-                      addToContinueWatching(item);
-                      window.location.href = `/movie/${item.id}`;
-                    }}
-                  />
-                </div>
-              )
-          )}
+          <div className="netflix-extra">
+            <p>
+              <strong>Original Language:</strong>{" "}
+              {movie.original_language?.toUpperCase() || "N/A"}
+            </p>
+
+            <p>
+              <strong>Popularity:</strong> {Math.round(movie.popularity || 0)}
+            </p>
+
+            <p>
+              <strong>Total Votes:</strong> {movie.vote_count || 0}
+            </p>
+
+            {movie.genres?.length > 0 && (
+              <p>
+                <strong>Genres:</strong>{" "}
+                {movie.genres.map((genre) => genre.name).join(", ")}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
@@ -161,8 +213,9 @@ function MovieDetails() {
           <button onClick={() => setTrailer(null)}>✕</button>
 
           <iframe
-            src={`https://www.youtube.com/embed/${trailer}`}
-            title="Movie Trailer"
+            src={`https://www.youtube.com/embed/${trailer}?autoplay=1`}
+            title="Trailer"
+            allow="autoplay; encrypted-media"
             allowFullScreen
           ></iframe>
         </div>
@@ -170,15 +223,30 @@ function MovieDetails() {
 
       {noTrailer && (
         <div className="trailer-modal">
-          <button onClick={() => setNoTrailer(false)}>✕</button>
-
           <div className="no-trailer-box">
-            <h2>Trailer Coming Soon 🎬</h2>
-            <p>This movie does not have an available trailer right now.</p>
+            <button
+              className="close-no-trailer"
+              onClick={() => setNoTrailer(false)}
+            >
+              ✕
+            </button>
+
+            <h2>No Trailer Available</h2>
+
+            <p>
+              Sorry, this title currently does not have an official trailer.
+            </p>
           </div>
         </div>
       )}
-    </section>
+
+      {toast && (
+        <div className="netflix-toast">
+          <div className="toast-icon">✓</div>
+          <span>{toast}</span>
+        </div>
+      )}
+    </>
   );
 }
 

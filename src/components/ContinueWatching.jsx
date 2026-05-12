@@ -1,34 +1,57 @@
-import { imageUrl } from "../api/tmdb";
+import { addToWatchlist } from "../utils/watchlist";
 
-function ContinueWatching() {
-  const watched = JSON.parse(localStorage.getItem("continueWatching")) || [];
+const imageUrl = "https://image.tmdb.org/t/p/w500";
 
-  if (watched.length === 0) return null;
-
+function ContinueWatching({ movies = [], playTrailer }) {
   return (
-    <section className="continue-section">
-      <h2>Continue Watching ⏯</h2>
+    <div className="continue-section">
+      <h2>Continue Watching</h2>
 
       <div className="movie-list">
-        {watched.map((movie) => (
+        {movies.map((movie) => (
           <div className="movie-card" key={movie.id}>
             <img
-              src={`${imageUrl}${movie.backdrop_path || movie.poster_path}`}
-              alt={movie.title || movie.name}
               className="movie-poster"
-              onClick={() => (window.location.href = `/movie/${movie.id}`)}
+              src={
+                movie.backdrop_path
+                  ? `${imageUrl}${movie.backdrop_path}`
+                  : movie.poster_path
+                  ? `${imageUrl}${movie.poster_path}`
+                  : "https://via.placeholder.com/500x300?text=No+Image"
+              }
+              alt={movie.title || movie.name}
             />
+
+            <button
+              className="trailer-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                playTrailer(movie);
+              }}
+            >
+              ▶
+            </button>
+
+            <button
+              className="fav-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToWatchlist(movie);
+              }}
+            >
+              +
+            </button>
 
             <div className="movie-overlay">
               <h4>{movie.title || movie.name}</h4>
-              <button onClick={() => (window.location.href = `/movie/${movie.id}`)}>
-                Continue
+              <button onClick={() => addToWatchlist(movie)}>
+                Add to My List
               </button>
             </div>
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }
 

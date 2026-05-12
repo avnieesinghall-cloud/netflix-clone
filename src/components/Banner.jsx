@@ -1,49 +1,46 @@
 import { useEffect, useState } from "react";
-import { searchMovies, imageUrl } from "../api/tmdb";
+import { fetchMovies, requests, imageUrl, fetchTrailer } from "../api/tmdb";
 
-function Banner({ movie }) {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-
-  const [favorites, setFavorites] = useState(
-    JSON.parse(localStorage.getItem("favorites")) || []
-  );
+function Banner() {
+  const [movie, setMovie] = useState(null);
+  const [trailer, setTrailer] = useState(null);
+  const [noTrailer, setNoTrailer] = useState(false);
 
   useEffect(() => {
-    const fetchSearch = async () => {
-      if (!query.trim()) {
-        setResults([]);
-        return;
+    const getBannerMovie = async () => {
+      try {
+        const data = await fetchMovies(requests.netflixOriginals);
+        const randomMovie = data[Math.floor(Math.random() * data.length)];
+        setMovie(randomMovie);
+      } catch (error) {
+        console.error("Banner error:", error);
       }
-
-      const movies = await searchMovies(query);
-      setResults(movies);
     };
 
-    fetchSearch();
-  }, [query]);
+    getBannerMovie();
+  }, []);
 
-  const toggleFavorite = (movie, e) => {
-    e.stopPropagation();
+  const playTrailer = async () => {
+    if (!movie) return;
 
-    const exists = favorites.find((fav) => fav.id === movie.id);
+    try {
+      const video = await fetchTrailer(movie.id, "tv");
 
-    let updatedFavorites;
-
-    if (exists) {
-      updatedFavorites = favorites.filter((fav) => fav.id !== movie.id);
-    } else {
-      updatedFavorites = [...favorites, movie];
+      if (video) {
+        setTrailer(video.key);
+        setNoTrailer(false);
+      } else {
+        setNoTrailer(true);
+      }
+    } catch (error) {
+      setNoTrailer(true);
     }
-
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
-  const openMovie = (movie) => {
-    const watched =
-      JSON.parse(localStorage.getItem("continueWatching")) || [];
+  const openDetails = () => {
+    if (!movie) return;
 
+    const watched = JSON.parse(localStorage.getItem("continueWatching")) || [];
     const filtered = watched.filter((item) => item.id !== movie.id);
 
     localStorage.setItem(
@@ -58,74 +55,46 @@ function Banner({ movie }) {
     <header
       className="banner"
       style={{
-        backgroundImage: `url(${imageUrl}${movie?.backdrop_path})`,
+        backgroundImage: movie?.backdrop_path
+          ? `url(${imageUrl}${movie.backdrop_path})`
+          : "none",
       }}
     >
-      <div className="banner-overlay">
-        <nav className="navbar">
-          <h1 className="logo">StreamFlix</h1>
+      <div className="banner-content">
+        <h2>{movie?.title || movie?.name || "StreamFlix"}</h2>
 
-          <div className="nav-right">
-            <input
-              type="text"
-              placeholder="Search movies..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
+        <p>
+          {movie?.overview
+            ? movie.overview.slice(0, 160) + "..."
+            : "Explore trending movies and shows."}
+        </p>
 
-            <button
-              className="wishlist-nav-btn"
-              onClick={() => (window.location.href = "/wishlist")}
-            >
-              My List
-            </button>
-
-            <div className="profile-avatar">A</div>
-
-            <span>avni@netflix.com</span>
-
-            <button className="logout-btn">Logout</button>
-          </div>
-        </nav>
-
-        <div className="banner-content">
-          <h1>{movie?.title || movie?.name}</h1>
-
-          <p>{movie?.overview}</p>
-
-          <button className="play-btn">▶ Play</button>
+        <div className="banner-buttons">
+          <button onClick={playTrailer}>▶ Play</button>
+          <button onClick={openDetails}>More Info</button>
         </div>
-
-        {results.length > 0 && (
-          <div className="search-results">
-            {results.map((movie) => (
-              <div
-                className="search-card"
-                key={movie.id}
-                onClick={() => openMovie(movie)}
-              >
-                <img
-                  src={`${imageUrl}${movie.poster_path}`}
-                  alt={movie.title}
-                />
-
-                <div className="search-info">
-                  <h4>{movie.title}</h4>
-
-                  <button
-                    className="search-fav-btn"
-                    onClick={(e) => toggleFavorite(movie, e)}
-                  >
-                    {favorites.find((fav) => fav.id === movie.id)
-                      ? "❤️"
-                      : "🤍"}
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
+
+      {trailer && (
+        <div className="trailer-modal">
+          <button onClick={() => setTrailer(null)}>✕</button>
+          <iframe
+            src={`https://www.youtube.com/embed/${trailer}`}
+            title="Trailer"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
+
+      {noTrailer && (
+        <div className="trailer-modal">
+          <button onClick={() => setNoTrailer(false)}>✕</button>
+          <div className="no-trailer-box">
+            <h2>Trailer Coming Soon 🎬</h2>
+            <p>This title does not have an available trailer right now.</p>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
